@@ -1,50 +1,97 @@
+import java.sql.SQLOutput;
+import java.util.HashSet;
 import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("wiek: ");
-        int wiek = scanner.nextInt();
+        int wiek = getWiek();
 
-        System.out.println("miasto: ");
-        String miasto = scanner.next().toLowerCase();
+        String miasto = getMiasto();
 
-        System.out.println("dzień tygodnia: ");
-        String dzien = scanner.next().toLowerCase();
+        String dzien  = getDzien();
 
         int cenaBiletu = 40;
-        int znizka = getZnizka(wiek, miasto, dzien);
+        double znizka = getZnizka(wiek, miasto, dzien);
 
         System.out.println("Dane: "+miasto+", "+wiek+", "+dzien);
-        System.out.println("Cena biletu:"+((znizka/100.0)*cenaBiletu)+"zł");
+        System.out.println("Cena biletu:"+(znizka*cenaBiletu)+"zł");
         System.out.println(znizka+"%");
     }
 
-    private static int getZnizka(int wiek, String miasto, String dzien) {
+    private static double getZnizka(int wiek, String miasto, String dzien) {
         int znizka = 0;
 
+        if(wiek <10 || dzien.equals("czwartek")){
+            znizka = 1;
+        }
         if(wiek <18 && wiek >10){
-            znizka += 50;
-        }else if(wiek <10){
-            znizka = 100;
+            znizka += 0.5;
         }
-
         if(miasto.equals("warszawa")){
-            znizka +=10;
+            znizka +=0.1;
         }
 
-        if (dzien.equals("czwartek")){
-            znizka = 100;
-        }
-        if(znizka>100){znizka=100;}
-
-        System.out.println(znizka);
-        return Math.abs(znizka-100);
-
-
-
-
+        return Math.abs(znizka-1);
     }
+
+    public static int getWiek() throws Exception{
+        int wiek;
+
+        try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("wiek: ");
+            wiek = scanner.nextInt();
+        }catch (Exception exc){
+            throw new Exception("Nieprawidłowy wiek");
+        }
+
+        if(wiek<1 || wiek>150){
+            throw new Exception("Wiek musi być z zakresu 1 i 150");
+        }
+
+        return wiek;
+    }
+
+    public static String getMiasto() throws Exception{
+        String miasto;
+        try{
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("miasto: ");
+            miasto = scanner.next();
+        }catch (Exception exc){
+            throw new Exception("Niepoprawne miasto");
+        }
+        return miasto;
+    }
+
+    public static String getDzien() throws Exception{
+
+            HashSet<String> dniTyg=new HashSet<>();
+            dniTyg.add("poniedziałek");
+            dniTyg.add("wtorek");
+            dniTyg.add("środa");
+            dniTyg.add("czwartek");
+            dniTyg.add("piątek");
+            dniTyg.add("sobota");
+            dniTyg.add("niedziela");
+
+            String dzien;
+            try{
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("dzień:");
+                dzien = scanner.nextLine();
+                dzien=dzien.trim();
+                dzien=dzien.toLowerCase();
+            }catch (Exception exc){
+                throw new Exception("Niepoprawny dzień tygodnia");
+            }
+            if(!dniTyg.contains(dzien)){
+                throw new Exception("Niepoprawny dzień tygodnia");
+            }
+            return dzien;
+        }
+
 }
