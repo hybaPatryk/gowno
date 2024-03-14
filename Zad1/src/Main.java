@@ -1,4 +1,4 @@
-import java.sql.SQLOutput;
+
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -16,13 +16,13 @@ public class Main {
         int cenaBiletu = 40;
         double znizka = getZnizka(wiek, miasto, dzien);
 
-        System.out.println("Dane: "+miasto+", "+wiek+", "+dzien);
-        System.out.println("Cena biletu:"+(znizka*cenaBiletu)+"zł");
-        System.out.println(znizka+"%");
+        System.out.println("Dane: "+wiek+", "+miasto+", "+dzien);
+        System.out.println("Cena biletu:"+(cenaBiletu-znizka*cenaBiletu)+"zł");
+        System.out.println(znizka*100+"%");
     }
 
-    private static double getZnizka(int wiek, String miasto, String dzien) {
-        int znizka = 0;
+    public static double getZnizka(int wiek, String miasto, String dzien) {
+        double znizka = 0;
 
         if(wiek <10 || dzien.equals("czwartek")){
             znizka = 1;
@@ -33,8 +33,7 @@ public class Main {
         if(miasto.equals("warszawa")){
             znizka +=0.1;
         }
-
-        return Math.abs(znizka-1);
+        return znizka;
     }
 
     public static int getWiek() throws Exception{
@@ -60,7 +59,7 @@ public class Main {
         try{
             Scanner scanner = new Scanner(System.in);
             System.out.print("miasto: ");
-            miasto = scanner.next();
+            miasto = scanner.next().toLowerCase();
         }catch (Exception exc){
             throw new Exception("Niepoprawne miasto");
         }
