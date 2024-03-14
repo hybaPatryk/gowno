@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
 
     @org.junit.jupiter.api.Test
-    void main() {
+    void test() {
         int wiek = 14;
         String miasto = "warszawa";
         String dzien = "poniedziałek";
